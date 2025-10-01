@@ -1,0 +1,1533 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuickCart - Services</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* All your existing CSS remains the same */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        :root {
+            --primary: #4a6cfa;
+            --secondary: #ff6b6b;
+            --accent: #42b883;
+            --dark: #2c3e50;
+            --light: #f8f9fa;
+            --gray: #6c757d;
+            --border: #e1e5eb;
+        }
+        body {
+            background-color: #f5f7fb;
+            color: var(--dark);
+            line-height: 1.6;
+            scroll-behavior: smooth;
+        }
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 10px;
+        }
+        header {
+            background: linear-gradient(to right, var(--primary), #6c8fff);
+            color: white;
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .header-left {
+            display: flex;
+            align-items: center;
+            flex: 1;
+        }
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+        }
+        .logo i {
+            margin-right: 10px;
+            color: var(--secondary);
+        }
+        .search-bar {
+            flex: 1;
+            max-width: 600px;
+            margin-left: 20px;
+            position: relative;
+        }
+        .search-bar input {
+            width: 100%;
+            padding: 12px 20px;
+            border-radius: 50px;
+            border: none;
+            font-size: 16px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .search-bar .search-buttons {
+            position: absolute;
+            right: 5px;
+            top: 5px;
+            display: flex;
+            gap: 5px;
+        }
+        .search-bar button {
+            background: var(--secondary);
+            border: none;
+            color: white;
+            border-radius: 50px;
+            padding: 7px 15px;
+            cursor: pointer;
+        }
+        .search-bar button.mic-btn {
+            background: var(--accent);
+        }
+        .search-bar button.mic-btn.active {
+            background: #e74c3c;
+        }
+        .header-actions {
+            display: flex;
+            align-items: center;
+        }
+        .header-actions a {
+            color: white;
+            text-decoration: none;
+            margin-left: 20px;
+            display: flex;
+            align-items: center;
+        }
+        .header-actions .language-selector {
+            margin-left: 20px;
+        }
+        .header-actions .language-selector select {
+            padding: 8px;
+            border-radius: 5px;
+            border: 1px solid var(--border);
+            background: white;
+            font-size: 14px;
+            cursor: pointer;
+            color: var(--dark);
+        }
+        .header-actions i {
+            font-size: 20px;
+            margin-right: 5px;
+        }
+        .cart-count {
+            background: var(--secondary);
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            margin-left: 5px;
+        }
+        nav {
+            background: white;
+            padding: 15px 0;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+        .nav-links {
+            display: flex;
+            list-style: none;
+            justify-content: center;
+            align-items: center;
+        }
+        .nav-links li {
+            margin: 0 15px;
+            position: relative;
+        }
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            transition: color 0.3s;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+        .nav-links i {
+            margin-right: 8px;
+            font-size: 18px;
+        }
+        .section {
+            padding: 60px 0;
+            scroll-margin-top: 100px;
+        }
+        .section-title {
+            text-align: center;
+            margin-bottom: 40px;
+            position: relative;
+        }
+        .section-title h2 {
+            font-size: 32px;
+            color: var(--dark);
+            display: inline-block;
+        }
+        .section-title h2:after {
+            content: '';
+            display: block;
+            width: 50px;
+            height: 3px;
+            background: var(--secondary);
+            margin: 10px auto;
+        }
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 20px;
+        }
+        .product-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s, opacity 0.3s;
+            cursor: move;
+        }
+        .product-card.hidden {
+            display: none;
+        }
+        .product-card:hover {
+            transform: translateY(-5px);
+        }
+        .product-img {
+            height: 200px;
+            width: 100%;
+            object-fit: cover;
+        }
+        .product-info {
+            padding: 15px;
+        }
+        .product-title {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+        .product-vendor {
+            color: var(--gray);
+            font-size: 14px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+        .product-vendor i {
+            margin-right: 5px;
+            color: var(--primary);
+        }
+        .product-distance {
+            color: var(--gray);
+            font-size: 14px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+        .product-distance i {
+            margin-right: 5px;
+            color: var(--accent);
+        }
+        .product-price {
+            font-weight: 600;
+            font-size: 20px;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+        .product-actions {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+        }
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: var(--secondary);
+            color: white;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+        .btn:hover {
+            background: #ff5252;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        .no-results {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 40px;
+            font-size: 18px;
+            color: var(--gray);
+        }
+        footer {
+            background: var(--dark);
+            color: white;
+            padding: 60px 0 20px;
+        }
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        .footer-column h3 {
+            font-size: 20px;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        .footer-column h3:after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 30px;
+            height: 2px;
+            background: var(--secondary);
+        }
+        .footer-column ul {
+            list-style: none;
+        }
+        .footer-column ul li {
+            margin-bottom: 10px;
+        }
+        .footer-column a {
+            color: #ccc;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        .footer-column a:hover {
+            color: white;
+        }
+        .social-links {
+            display: flex;
+            gap: 15px;
+        }
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            transition: all 0.3s;
+        }
+        .social-links a:hover {
+            background: var(--primary);
+            transform: translateY(-3px);
+        }
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 14px;
+            color: #ccc;
+        }
+        @media (max-width: 992px) {
+            .header-content {
+                flex-direction: column;
+            }
+            .header-left {
+                flex-direction: column;
+                width: 100%;
+            }
+            .search-bar {
+                width: 100%;
+                max-width: none;
+                margin: 15px 0 0 0;
+            }
+            .nav-links {
+                flex-wrap: wrap;
+            }
+            .product-grid {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            }
+        }
+        @media (max-width: 768px) {
+            .nav-links li {
+                margin: 5px 10px;
+            }
+            .section-title h2 {
+                font-size: 28px;
+            }
+            .product-grid {
+                grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+                gap: 15px;
+            }
+        }
+        @media (max-width: 576px) {
+            .header-actions a span {
+                display: none;
+            }
+            .nav-links {
+                overflow-x: auto;
+                white-space: nowrap;
+                justify-content: flex-start;
+                padding-bottom: 10px;
+            }
+            .product-grid {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+        }
+        
+        /* Search Results Styling */
+        .search-results-title {
+            text-align: center;
+            margin: 20px 0;
+            font-size: 24px;
+            color: var(--dark);
+        }
+        .search-results-count {
+            text-align: center;
+            margin-bottom: 30px;
+            color: var(--gray);
+        }
+        .back-to-all {
+            display: block;
+            text-align: center;
+            margin: 20px 0;
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .back-to-all:hover {
+            text-decoration: underline;
+        }
+        .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: Arial, sans-serif;
+    font-size: 22px;
+    font-weight: bold;
+    color:white;
+}
+
+.logo-img {
+    width: 40px;
+    height: 40px;
+}
+
+.logo-text {
+    letter-spacing: 1px;
+}
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-content">
+            <div class="header-left">
+                <div class="logo" onclick="redirectToHome()">
+    <img src="https://cdn-icons-png.flaticon.com/512/3081/3081559.png" alt="ShopNest Logo" class="logo-img">
+    <span class="logo-text">ShopNest</span>
+</div>
+                <!-- <div class="logo" onclick="redirectToHome()">
+                    <i class="fas fa-shopping-bag"></i>
+                    <span data-translate="logo_text">QuickCart</span>
+                </div> -->
+                <div class="search-bar">
+                    <input type="text" placeholder="Search for products, services or businesses..." data-translate-placeholder="search_placeholder" id="search-input">
+                    <div class="search-buttons">
+                        <button class="search-btn"><i class="fas fa-search"></i></button>
+                        <button class="mic-btn"><i class="fas fa-microphone"></i></button>
+                    </div>
+                </div>
+            </div>
+            <div class="header-actions">
+                <a href="add1.html#cart?lang=en" data-page="cart"><i class="fas fa-shopping-cart"></i> <span data-translate="cart">Cart</span> <span class="cart-count">0</span></a>
+                <div class="language-selector">
+                    <select id="language-select">
+                        <option value="en">English</option>
+                        <option value="hi">हिंदी</option>
+                        <option value="es">Español</option>
+                        <option value="fr">Français</option>
+                        <option value="te">తెలుగు</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </header>
+    <nav>
+        <div class="container">
+            <ul class="nav-links">
+                <li><a href="add1.html#home?lang=en" data-page="home"><i class="fas fa-home"></i> <span data-translate="nav_home">Home</span></a></li>
+                <li><a href="add1.html#products?lang=en" data-page="home"><i class="fas fa-shopping-bag"></i> <span data-translate="nav_products">Products</span></a></li>
+                <li><a href="add1.html#services?lang=en" data-page="home"><i class="fas fa-tools"></i> <span data-translate="nav_services">Services</span></a></li>
+                <li><a href="add1.html#businesses?lang=en" data-page="home"><i class="fas fa-store"></i> <span data-translate="nav_businesses">Businesses</span></a></li>
+            </ul>
+        </div>
+    </nav>
+    
+    <!-- Search Results Section (initially hidden) -->
+    <section id="search-results" class="section" style="display: none;">
+        <div class="container">
+            <h2 class="search-results-title" data-translate="search_results">Search Results</h2>
+            <div class="search-results-count" id="results-count"></div>
+            <a href="#" class="back-to-all" id="back-to-all" data-translate="back_to_all">Back to All Services</a>
+            <div class="product-grid" id="search-results-grid">
+                <!-- Search results will be populated here -->
+            </div>
+        </div>
+    </section>
+    
+    <!-- Regular Services Sections -->
+    <section class="section" id="all-services">
+        <div class="container">
+            <div class="section-title">
+                <h2 data-translate="category_services">Services</h2>
+            </div>
+            <div class="product-grid">
+                <!-- Service 1 -->
+                <div class="product-card" draggable="true" data-product='{"id":1,"name":"Jewelry Cleaning","price":999,"vendor":"Shine Services","category":"Services","image":"Jewelry Cleaning.jpg"}'>
+                    <img src="Jewelry Cleaning.jpg" alt="Jewelry Cleaning" class="product-img" onerror="this.src='https://via.placeholder.com/200x200?text=Jewelry+Cleaning';">
+                    <div class="product-info">
+                        <h3 class="product-title" data-translate-product="name_1">Jewellery Cleaning</h3>
+                        <div class="product-vendor"><i class="fas fa-store"></i> <span data-translate-product="vendor_1">Shine Services</span></div>
+                        <div class="product-distance"><i class="fas fa-map-marker-alt"></i> <span data-translate-product="distance_1">Within 3 km</span></div>
+                        <div class="product-price">₹999</div>
+                        <div class="product-actions"><button class="btn add-to-cart" data-translate="add_to_cart">Add to Cart</button></div>
+                    </div>
+                </div>
+                <!-- Service 2 -->
+                <div class="product-card" draggable="true" data-product='{"id":2,"name":"Ring Resizing","price":1999,"vendor":"Gem Fix","category":"Services","image":"Ring Resizing.jpg"}'>
+                    <img src="Ring Resizing.jpg" alt="Ring Resizing" class="product-img" onerror="this.src='https://via.placeholder.com/200x200?text=Ring+Resizing';">
+                    <div class="product-info">
+                        <h3 class="product-title" data-translate-product="name_2">Ring Resizing</h3>
+                        <div class="product-vendor"><i class="fas fa-store"></i> <span data-translate-product="vendor_2">Gem Fix</span></div>
+                        <div class="product-distance"><i class="fas fa-map-marker-alt"></i> <span data-translate-product="distance_2">Within 4 km</span></div>
+                        <div class="product-price">₹1,999</div>
+                        <div class="product-actions"><button class="btn add-to-cart" data-translate="add_to_cart">Add to Cart</button></div>
+                    </div>
+                </div>
+                <!-- Service 3 -->
+                <div class="product-card" draggable="true" data-product='{"id":3,"name":"Custom Design","price":4999,"vendor":"Sparkle Studio","category":"Services","image":"Custom Design.jpg"}'>
+                    <img src="Custom Design.jpg" alt="Custom Design" class="product-img" onerror="this.src='https://via.placeholder.com/200x200?text=Custom+Design';">
+                    <div class="product-info">
+                        <h3 class="product-title" data-translate-product="name_3">Custom Design</h3>
+                        <div class="product-vendor"><i class="fas fa-store"></i> <span data-translate-product="vendor_3">Sparkle Studio</span></div>
+                        <div class="product-distance"><i class="fas fa-map-marker-alt"></i> <span data-translate-product="distance_3">Within 2 km</span></div>
+                        <div class="product-price">₹4,999</div>
+                        <div class="product-actions"><button class="btn add-to-cart" data-translate="add_to_cart">Add to Cart</button></div>
+                    </div>
+                </div>
+                <!-- Service 4 -->
+                <div class="product-card" draggable="true" data-product='{"id":4,"name":"Jewelry Repair","price":1499,"vendor":"Elegant Fixes","category":"Services","image":"Jewelry Repair.jpg"}'>
+                    <img src="Jewelry Repair.jpg" alt="Jewelry Repair" class="product-img" onerror="this.src='https://via.placeholder.com/200x200?text=Jewelry+Repair';">
+                    <div class="product-info">
+                        <h3 class="product-title" data-translate-product="name_4">Jewellery Repair</h3>
+                        <div class="product-vendor"><i class="fas fa-store"></i> <span data-translate-product="vendor_4">Elegant Fixes</span></div>
+                        <div class="product-distance"><i class="fas fa-map-marker-alt"></i> <span data-translate-product="distance_4">Within 5 km</span></div>
+                        <div class="product-price">₹1,499</div>
+                        <div class="product-actions"><button class="btn add-to-cart" data-translate="add_to_cart">Add to Cart</button></div>
+                    </div>
+                </div>
+                <!-- Service 5 -->
+                <div class="product-card" draggable="true" data-product='{"id":5,"name":"Engraving Service","price":799,"vendor":"Luxury Crafts","category":"Services","image":"Engraving Service.jpg"}'>
+                    <img src="Engraving Service.jpg" alt="Engraving Service" class="product-img" onerror="this.src='https://via.placeholder.com/200x200?text=Engraving+Service';">
+                    <div class="product-info">
+                        <h3 class="product-title" data-translate-product="name_5">Engraving Service</h3>
+                        <div class="product-vendor"><i class="fas fa-store"></i> <span data-translate-product="vendor_5">Luxury Crafts</span></div>
+                        <div class="product-distance"><i class="fas fa-map-marker-alt"></i> <span data-translate-product="distance_5">Within 3 km</span></div>
+                        <div class="product-price">₹799</div>
+                        <div class="product-actions"><button class="btn add-to-cart" data-translate="add_to_cart">Add to Cart</button></div>
+                    </div>
+                </div>
+                <!-- Service 6 -->
+                <div class="product-card" draggable="true" data-product='{"id":6,"name":"Gemstone Setting","price":2999,"vendor":"Gem Masters","category":"Services","image":"Gemstone Setting.jpg"}'>
+                    <img src="Gemstone Setting.jpg" alt="Gemstone Setting" class="product-img" onerror="this.src='https://via.placeholder.com/200x200?text=Gemstone+Setting';">
+                    <div class="product-info">
+                        <h3 class="product-title" data-translate-product="name_6">Gemstone Setting</h3>
+                        <div class="product-vendor"><i class="fas fa-store"></i> <span data-translate-product="vendor_6">Gem Masters</span></div>
+                        <div class="product-distance"><i class="fas fa-map-marker-alt"></i> <span data-translate-product="distance_6">Within 4 km</span></div>
+                        <div class="product-price">₹2,999</div>
+                        <div class="product-actions"><button class="btn add-to-cart" data-translate="add_to_cart">Add to Cart</button></div>
+                    </div>
+                </div>
+                <!-- Service 7 -->
+                <div class="product-card" draggable="true" data-product='{"id":7,"name":"Polishing Service","price":799,"vendor":"Shine Services","category":"Services","image":"Polishing Service.jpg"}'>
+                    <img src="Polishing Service.jpg" alt="Polishing Service" class="product-img" onerror="this.src='https://via.placeholder.com/200x200?text=Polishing+Service';">
+                    <div class="product-info">
+                        <h3 class="product-title" data-translate-product="name_7">Polishing Service</h3>
+                        <div class="product-vendor"><i class="fas fa-store"></i> <span data-translate-product="vendor_7">Shine Services</span></div>
+                        <div class="product-distance"><i class="fas fa-map-marker-alt"></i> <span data-translate-product="distance_7">Within 3 km</span></div>
+                        <div class="product-price">₹799</div>
+                        <div class="product-actions"><button class="btn add-to-cart" data-translate="add_to_cart">Add to Cart</button></div>
+                    </div>
+                </div>
+                <!-- Service 8 -->
+                <div class="product-card" draggable="true" data-product='{"id":8,"name":"Appraisal Service","price":1999,"vendor":"Gem Evaluators","category":"Services","image":"Appraisal Service.jpg"}'>
+                    <img src="Appraisal Service.jpg" alt="Appraisal Service" class="product-img" onerror="this.src='https://via.placeholder.com/200x200?text=Appraisal+Service';">
+                    <div class="product-info">
+                        <h3 class="product-title" data-translate-product="name_8">Appraisal Service</h3>
+                        <div class="product-vendor"><i class="fas fa-store"></i> <span data-translate-product="vendor_8">Gem Evaluators</span></div>
+                        <div class="product-distance"><i class="fas fa-map-marker-alt"></i> <span data-translate-product="distance_8">Within 2 km</span></div>
+                        <div class="product-price">₹1,999</div>
+                        <div class="product-actions"><button class="btn add-to-cart" data-translate="add_to_cart">Add to Cart</button></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Home Services Section -->
+    <section id="home-services" class="section products">
+        <div class="container">
+            <div class="section-title">
+                <h2 data-translate="home_services">Home Services</h2>
+            </div>
+            <div class="product-grid">
+                <!-- Service 9 -->
+                <div class="product-card" draggable="true" data-product='{"id":9,"name":"Interior Cleaning","price":2999,"vendor":"Clean Homes","category":"Home Services","image":"Interior Cleaning.jpg"}'>
+                    <img src="Interior Cleaning.jpg" alt="Interior Cleaning" class="product-img" onerror="this.src='https://via.placeholder.com/200x200?text=Interior+Cleaning';">
+                    <div class="product-info">
+                        <h3 class="product-title" data-translate-product="name_9">Interior Cleaning</h3>
+                        <div class="product-vendor"><i class="fas fa-store"></i> <span data-translate-product="vendor_9">Clean Homes</span></div>
+                        <div class="product-distance"><i class="fas fa-map-marker-alt"></i> <span data-translate-product="distance_9">Within 4 km</span></div>
+                        <div class="product-price">₹2,999</div>
+                        <div class="product-actions"><button class="btn add-to-cart" data-translate="add_to_cart">Add to Cart</button></div>
+                    </div>
+                </div>
+                <!-- Service 10 -->
+                <div class="product-card" draggable="true" data-product='{"id":10,"name":"Plumbing Service","price":1499,"vendor":"Fix Pipes","category":"Home Services","image":"Plumbing Service.jpg"}'>
+                    <img src="Plumbing Service.jpg" alt="Plumbing Service" class="product-img" onerror="this.src='https://via.placeholder.com/200x200?text=Plumbing+Service';">
+                    <div class="product-info">
+                        <h3 class="product-title" data-translate-product="name_10">Plumbing Service</h3>
+                        <div class="product-vendor"><i class="fas fa-store"></i> <span data-translate-product="vendor_10">Fix Pipes</span></div>
+                        <div class="product-distance"><i class="fas fa-map-marker-alt"></i> <span data-translate-product="distance_10">Within 3 km</span></div>
+                        <div class="product-price">₹1,499</div>
+                        <div class="product-actions"><button class="btn add-to-cart" data-translate="add_to_cart">Add to Cart</button></div>
+                    </div>
+                </div>
+                <!-- Service 11 -->
+                <div class="product-card" draggable="true" data-product='{"id":11,"name":"Electrical Repair","price":1999,"vendor":"Spark Tech","category":"Home Services","image":"Electrical Repair.jpg"}'>
+                    <img src="Electrical Repair.jpg" alt="Electrical Repair" class="product-img" onerror="this.src='https://via.placeholder.com/200x200?text=Electrical+Repair';">
+                    <div class="product-info">
+                        <h3 class="product-title" data-translate-product="name_11">Electrical Repair</h3>
+                        <div class="product-vendor"><i class="fas fa-store"></i> <span data-translate-product="vendor_11">Spark Tech</span></div>
+                        <div class="product-distance"><i class="fas fa-map-marker-alt"></i> <span data-translate-product="distance_11">Within 5 km</span></div>
+                        <div class="product-price">₹1,999</div>
+                        <div class="product-actions"><button class="btn add-to-cart" data-translate="add_to_cart">Add to Cart</button></div>
+                    </div>
+                </div>
+                <!-- Service 12 -->
+                <div class="product-card" draggable="true" data-product='{"id":12,"name":"Painting Service","price":3999,"vendor":"Color Homes","category":"Home Services","image":"Painting Service.jpg"}'>
+                    <img src="Painting Service.jpg" alt="Painting Service" class="product-img" onerror="this.src='https://via.placeholder.com/200x200?text=Painting+Service';">
+                    <div class="product-info">
+                        <h3 class="product-title" data-translate-product="name_12">Painting Service</h3>
+                        <div class="product-vendor"><i class="fas fa-store"></i> <span data-translate-product="vendor_12">Color Homes</span></div>
+                        <div class="product-distance"><i class="fas fa-map-marker-alt"></i> <span data-translate-product="distance_12">Within 4 km</span></div>
+                        <div class="product-price">₹3,999</div>
+                        <div class="product-actions"><button class="btn add-to-cart" data-translate="add_to_cart">Add to Cart</button></div>
+                    </div>
+                </div>
+                <!-- Service 13 -->
+                <div class="product-card" draggable="true" data-product='{"id":13,"name":"Carpentry Service","price":2499,"vendor":"Wood Works","category":"Home Services","image":"Carpentry Service.jpg"}'>
+                    <img src="Carpentry Service.jpg" alt="Carpentry Service" class="product-img" onerror="this.src='https://via.placeholder.com/200x200?text=Carpentry+Service';">
+                    <div class="product-info">
+                        <h3 class="product-title" data-translate-product="name_13">Carpentry Service</h3>
+                        <div class="product-vendor"><i class="fas fa-store"></i> <span data-translate-product="vendor_13">Wood Works</span></div>
+                        <div class="product-distance"><i class="fas fa-map-marker-alt"></i> <span data-translate-product="distance_13">Within 3 km</span></div>
+                        <div class="product-price">₹2,499</div>
+                        <div class="product-actions"><button class="btn add-to-cart" data-translate="add_to_cart">Add to Cart</button></div>
+                    </div>
+                </div>
+                <!-- Service 14 -->
+                <div class="product-card" draggable="true" data-product='{"id":14,"name":"Pest Control","price":1999,"vendor":"Safe Homes","category":"Home Services","image":"Pest Control.jpg"}'>
+                    <img src="Pest Control.jpg" alt="Pest Control" class="product-img" onerror="this.src='https://via.placeholder.com/200x200?text=Pest+Control';">
+                    <div class="product-info">
+                        <h3 class="product-title" data-translate-product="name_14">Pest Control</h3>
+                        <div class="product-vendor"><i class="fas fa-store"></i> <span data-translate-product="vendor_14">Safe Homes</span></div>
+                        <div class="product-distance"><i class="fas fa-map-marker-alt"></i> <span data-translate-product="distance_14">Within 2 km</span></div>
+                        <div class="product-price">₹1,999</div>
+                        <div class="product-actions"><button class="btn add-to-cart" data-translate="add_to_cart">Add to Cart</button></div>
+                    </div>
+                </div>
+                <!-- Service 15 -->
+                <div class="product-card" draggable="true" data-product='{"id":15,"name":"AC Servicing","price":2499,"vendor":"Cool Tech","category":"Home Services","image":"AC Servicing.jpg"}'>
+                    <img src="AC Servicing.jpg" alt="AC Servicing" class="product-img" onerror="this.src='https://via.placeholder.com/200x200?text=AC+Servicing';">
+                    <div class="product-info">
+                        <h3 class="product-title" data-translate-product="name_15">AC Servicing</h3>
+                        <div class="product-vendor"><i class="fas fa-store"></i> <span data-translate-product="vendor_15">Cool Tech</span></div>
+                        <div class="product-distance"><i class="fas fa-map-marker-alt"></i> <span data-translate-product="distance_15">Within 5 km</span></div>
+                        <div class="product-price">₹2,499</div>
+                        <div class="product-actions"><button class="btn add-to-cart" data-translate="add_to_cart">Add to Cart</button></div>
+                    </div>
+                </div>
+                <!-- Service 16 -->
+                <div class="product-card" draggable="true" data-product='{"id":16,"name":"Home Deep Cleaning","price":4999,"vendor":"Clean Homes","category":"Home Services","image":"Home Deep Cleaning.jpg"}'>
+                    <img src="Home Deep Cleaning.jpg" alt="Home Deep Cleaning" class="product-img" onerror="this.src='https://via.placeholder.com/200x200?text=Home+Deep+Cleaning';">
+                    <div class="product-info">
+                        <h3 class="product-title" data-translate-product="name_16">Home Deep Cleaning</h3>
+                        <div class="product-vendor"><i class="fas fa-store"></i> <span data-translate-product="vendor_16">Clean Homes</span></div>
+                        <div class="product-distance"><i class="fas fa-map-marker-alt"></i> <span data-translate-product="distance_16">Within 4 km</span></div>
+                        <div class="product-price">₹4,999</div>
+                        <div class="product-actions"><button class="btn add-to-cart" data-translate="add_to_cart">Add to Cart</button></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Personal Services Section -->
+    <section id="personal-services" class="section products">
+        <div class="container">
+            <div class="section-title">
+                <h2 data-translate="personal_services">Personal Services</h2>
+            </div>
+            <div class="product-grid">
+                <!-- Service 17 -->
+                <div class="product-card" draggable="true" data-product='{"id":17,"name":"Haircut Service","price":499,"vendor":"Style Salon","category":"Personal Services","image":"Haircut Service.jpg"}'>
+                    <img src="Haircut Service.jpg" alt="Haircut Service" class="product-img" onerror="this.src='https://via.placeholder.com/200x200?text=Haircut+Service';">
+                    <div class="product-info">
+                        <h3 class="product-title" data-translate-product="name_17">Haircut Service</h3>
+                        <div class="product-vendor"><i class="fas fa-store"></i> <span data-translate-product="vendor_17">Style Salon</span></div>
+                        <div class="product-distance"><i class="fas fa-map-marker-alt"></i> <span data-translate-product="distance_17">Within 3 km</span></div>
+                        <div class="product-price">₹499</div>
+                        <div class="product-actions"><button class="btn add-to-cart" data-translate="add_to_cart">Add to Cart</button></div>
+                    </div>
+                </div>
+                <!-- Service 18 -->
+                <div class="product-card" draggable="true" data-product='{"id":18,"name":"Spa Treatment","price":1999,"vendor":"Relax Zone","category":"Personal Services","image":"Spa Treatment.jpg"}'>
+                    <img src="spatreatment.jpeg" alt="Spa Treatment" class="product-img" onerror="this.src='https://via.placeholder.com/200x200?text=Spa+Treatment';">
+                    <div class="product-info">
+                        <h3 class="product-title" data-translate-product="name_18">Spa Treatment</h3>
+                        <div class="product-vendor"><i class="fas fa-store"></i> <span data-translate-product="vendor_18">Relax Zone</span></div>
+                        <div class="product-distance"><i class="fas fa-map-marker-alt"></i> <span data-translate-product="distance_18">Within 4 km</span></div>
+                        <div class="product-price">₹1,999</div>
+                        <div class="product-actions"><button class="btn add-to-cart" data-translate="add_to_cart">Add to Cart</button></div>
+                    </div>
+                </div>
+                <!-- Service 19 -->
+                <div class="product-card" draggable="true" data-product='{"id":19,"name":"Manicure & Pedicure","price":899,"vendor":"Beauty Care","category":"Personal Services","image":"Manicure & Pedicure.jpg"}'>
+                    <img src="Manicure & Pedicure.jpg" alt="Manicure & Pedicure" class="product-img" onerror="this.src='https://via.placeholder.com/200x200?text=Manicure+Pedicure';">
+                    <div class="product-info">
+                        <h3 class="product-title" data-translate-product="name_19">Manicure & Pedicure</h3>
+                        <div class="product-vendor"><i class="fas fa-store"></i> <span data-translate-product="vendor_19">Beauty Care</span></div>
+                        <div class="product-distance"><i class="fas fa-map-marker-alt"></i> <span data-translate-product="distance_19">Within 2 km</span></div>
+                        <div class="product-price">₹899</div>
+                        <div class="product-actions"><button class="btn add-to-cart" data-translate="add_to_cart">Add to Cart</button></div>
+                    </div>
+                </div>
+                <!-- Service 20 -->
+                <div class="product-card" draggable="true" data-product='{"id":20,"name":"Facial Treatment","price":1499,"vendor":"Glow Spa","category":"Personal Services","image":"Facial Treatment.jpg"}'>
+                    <img src="Facial Treatment.jpg" alt="Facial Treatment" class="product-img" onerror="this.src='https://via.placeholder.com/200x200?text=Facial+Treatment';">
+                    <div class="product-info">
+                        <h3 class="product-title" data-translate-product="name_20">Facial Treatment</h3>
+                        <div class="product-vendor"><i class="fas fa-store"></i> <span data-translate-product="vendor_20">Glow Spa</span></div>
+                        <div class="product-distance"><i class="fas fa-map-marker-alt"></i> <span data-translate-product="distance_20">Within 3 km</span></div>
+                        <div class="product-price">₹1,499</div>
+                        <div class="product-actions"><button class="btn add-to-cart" data-translate="add_to_cart">Add to Cart</button></div>
+                    </div>
+                </div>
+                <!-- Service 21 -->
+                <div class="product-card" draggable="true" data-product='{"id":21,"name":"Massage Therapy","price":1799,"vendor":"Relax Zone","category":"Personal Services","image":"Massage Therapy.jpg"}'>
+                    <img src="Massage Therapy.jpg" alt="Massage Therapy" class="product-img" onerror="this.src='https://via.placeholder.com/200x200?text=Massage+Therapy';">
+                    <div class="product-info">
+                        <h3 class="product-title" data-translate-product="name_21">Massage Therapy</h3>
+                        <div class="product-vendor"><i class="fas fa-store"></i> <span data-translate-product="vendor_21">Relax Zone</span></div>
+                        <div class="product-distance"><i class="fas fa-map-marker-alt"></i> <span data-translate-product="distance_21">Within 4 km</span></div>
+                        <div class="product-price">₹1,799</div>
+                        <div class="product-actions"><button class="btn add-to-cart" data-translate="add_to_cart">Add to Cart</button></div>
+                    </div>
+                </div>
+                <!-- Service 22 -->
+                <div class="product-card" draggable="true" data-product='{"id":22,"name":"Hair Coloring","price":1299,"vendor":"Style Salon","category":"Personal Services","image":"Hair Coloring.jpg"}'>
+                    <img src="Hair Coloring.jpg" alt="Hair Coloring" class="product-img" onerror="this.src='https://via.placeholder.com/200x200?text=Hair+Coloring';">
+                    <div class="product-info">
+                        <h3 class="product-title" data-translate-product="name_22">Hair Coloring</h3>
+                        <div class="product-vendor"><i class="fas fa-store"></i> <span data-translate-product="vendor_22">Style Salon</span></div>
+                        <div class="product-distance"><i class="fas fa-map-marker-alt"></i> <span data-translate-product="distance_22">Within 3 km</span></div>
+                        <div class="product-price">₹1,299</div>
+                        <div class="product-actions"><button class="btn add-to-cart" data-translate="add_to_cart">Add to Cart</button></div>
+                    </div>
+                </div>
+                <!-- Service 23 -->
+                <div class="product-card" draggable="true" data-product='{"id":23,"name":"Makeup Service","price":1999,"vendor":"Beauty Care","category":"Personal Services","image":"Makeup Service.jpg"}'>
+                    <img src="Makeup Service.jpg" alt="Makeup Service" class="product-img" onerror="this.src='https://via.placeholder.com/200x200?text=Makeup+Service';">
+                    <div class="product-info">
+                        <h3 class="product-title" data-translate-product="name_23">Makeup Service</h3>
+                        <div class="product-vendor"><i class="fas fa-store"></i> <span data-translate-product="vendor_23">Beauty Care</span></div>
+                        <div class="product-distance"><i class="fas fa-map-marker-alt"></i> <span data-translate-product="distance_23">Within 2 km</span></div>
+                        <div class="product-price">₹1,999</div>
+                        <div class="product-actions"><button class="btn add-to-cart" data-translate="add_to_cart">Add to Cart</button></div>
+                    </div>
+                </div>
+                <!-- Service 24 -->
+                <div class="product-card" draggable="true" data-product='{"id":24,"name":"Waxing Service","price":699,"vendor":"Glow Spa","category":"Personal Services","image":"Waxing Service.jpg"}'>
+                    <img src="Waxing Service.jpg" alt="Waxing Service" class="product-img" onerror="this.src='https://via.placeholder.com/200x200?text=Waxing+Service';">
+                    <div class="product-info">
+                        <h3 class="product-title" data-translate-product="name_24">Waxing Service</h3>
+                        <div class="product-vendor"><i class="fas fa-store"></i> <span data-translate-product="vendor_24">Glow Spa</span></div>
+                        <div class="product-distance"><i class="fas fa-map-marker-alt"></i> <span data-translate-product="distance_24">Within 3 km</span></div>
+                        <div class="product-price">₹699</div>
+                        <div class="product-actions"><button class="btn add-to-cart" data-translate="add_to_cart">Add to Cart</button></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3 data-translate="footer_about">About ShopNest</h3>
+                    <p data-translate="footer_about_desc">ShopNest is your one-stop solution for all local services and products. We connect you with the best local businesses in your area.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h3 data-translate="footer_links">Quick Links</h3>
+                    <ul>
+                        <li><a href="add1.html#home?lang=en" data-translate="nav_home">Home</a></li>
+                        <li><a href="add1.html#products?lang=en" data-translate="nav_products">Products</a></li>
+                        <li><a href="add1.html#services?lang=en" data-translate="nav_services">Services</a></li>
+                        <li><a href="add1.html#businesses?lang=en" data-translate="nav_businesses">Businesses</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3 data-translate="footer_contact">Contact Us</h3>
+                    <ul>
+                        <li><i class="fas fa-map-marker-alt"></i> 123 Business Street, City, Country</li>
+                        <li><i class="fas fa-phone"></i> +1 234 567 8900</li>
+                        <li><i class="fas fa-envelope"></i> info@shopnest.com</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2023 ShopNest. <span data-translate="footer_rights">All rights reserved.</span></p>
+            </div>
+        </div>
+    </footer>
+    <script>
+        function redirectToHome() {
+    window.location.href = "add1.html";
+  }
+        // Enhanced Search Functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.getElementById('search-input');
+            const searchBtn = document.querySelector('.search-btn');
+            const micBtn = document.querySelector('.mic-btn');
+            const allSections = document.querySelectorAll('.section');
+            const searchResultsSection = document.getElementById('search-results');
+            const searchResultsGrid = document.getElementById('search-results-grid');
+            const resultsCount = document.getElementById('results-count');
+            const backToAll = document.getElementById('back-to-all');
+            const allServicesSection = document.getElementById('all-services');
+            
+            // Get all product cards
+            const allProductCards = document.querySelectorAll('.product-card');
+            
+            // Function to perform search
+            function performSearch(query) {
+                if (!query.trim()) {
+                    // If query is empty, show all sections and hide search results
+                    allSections.forEach(section => {
+                        if (section.id !== 'search-results') {
+                            section.style.display = 'block';
+                        }
+                    });
+                    searchResultsSection.style.display = 'none';
+                    return;
+                }
+                
+                // Hide all regular sections
+                allSections.forEach(section => {
+                    if (section.id !== 'search-results') {
+                        section.style.display = 'none';
+                    }
+                });
+                
+                // Show search results section
+                searchResultsSection.style.display = 'block';
+                
+                // Clear previous results
+                searchResultsGrid.innerHTML = '';
+                
+                // Filter products based on search query
+                const searchResults = [];
+                const queryLower = query.toLowerCase();
+                
+                allProductCards.forEach(card => {
+                    const productData = JSON.parse(card.getAttribute('data-product'));
+                    const productName = productData.name.toLowerCase();
+                    const productVendor = productData.vendor.toLowerCase();
+                    const productCategory = productData.category.toLowerCase();
+                    
+                    if (productName.includes(queryLower) || 
+                        productVendor.includes(queryLower) || 
+                        productCategory.includes(queryLower)) {
+                        searchResults.push(card.cloneNode(true));
+                    }
+                });
+                
+                // Display results count
+                const resultsText = searchResults.length === 1 ? 
+                    '1 service found' : 
+                    `${searchResults.length} services found`;
+                resultsCount.textContent = resultsText;
+                
+                // Display search results
+                if (searchResults.length > 0) {
+                    searchResults.forEach(result => {
+                        searchResultsGrid.appendChild(result);
+                    });
+                } else {
+                    // Show no results message
+                    const noResults = document.createElement('div');
+                    noResults.className = 'no-results';
+                    noResults.innerHTML = `<i class="fas fa-search" style="font-size: 48px; margin-bottom: 20px;"></i><p>No services found for "${query}"</p>`;
+                    searchResultsGrid.appendChild(noResults);
+                }
+                
+                // Reattach event listeners to new cards
+                attachEventListenersToCards();
+            }
+            
+            // Function to reattach event listeners to product cards
+            function attachEventListenersToCards() {
+                const addToCartButtons = document.querySelectorAll('.add-to-cart');
+                addToCartButtons.forEach(button => {
+                    button.addEventListener('click', function() {
+                        const productCard = this.closest('.product-card');
+                        const productData = JSON.parse(productCard.getAttribute('data-product'));
+                        addToCart(productData);
+                    });
+                });
+            }
+            
+            // Search on button click
+            searchBtn.addEventListener('click', function() {
+                performSearch(searchInput.value);
+            });
+            
+            // Search on Enter key
+            searchInput.addEventListener('keyup', function(event) {
+                if (event.key === 'Enter') {
+                    performSearch(searchInput.value);
+                }
+            });
+            
+            // Back to all services
+            backToAll.addEventListener('click', function(e) {
+                e.preventDefault();
+                // Show all sections
+                allSections.forEach(section => {
+                    section.style.display = 'block';
+                });
+                // Hide search results
+                searchResultsSection.style.display = 'none';
+                // Clear search input
+                searchInput.value = '';
+            });
+            
+            // Voice search functionality
+            let recognition;
+            if ('webkitSpeechRecognition' in window) {
+                recognition = new webkitSpeechRecognition();
+                recognition.continuous = false;
+                recognition.interimResults = false;
+                recognition.lang = 'en-US';
+                
+                recognition.onstart = function() {
+                    micBtn.classList.add('active');
+                };
+                
+                recognition.onresult = function(event) {
+                    const transcript = event.results[0][0].transcript;
+                    searchInput.value = transcript;
+                    performSearch(transcript);
+                    micBtn.classList.remove('active');
+                };
+                
+                recognition.onerror = function() {
+                    micBtn.classList.remove('active');
+                };
+                
+                recognition.onend = function() {
+                    micBtn.classList.remove('active');
+                };
+                
+                micBtn.addEventListener('click', function() {
+                    if (micBtn.classList.contains('active')) {
+                        recognition.stop();
+                    } else {
+                        recognition.start();
+                    }
+                });
+            } else {
+                micBtn.style.display = 'none';
+            }
+            
+            // Add to cart functionality
+            function addToCart(product) {
+                let cart = JSON.parse(localStorage.getItem('cart')) || [];
+                const existingItemIndex = cart.findIndex(item => item.id === product.id);
+                
+                if (existingItemIndex > -1) {
+                    cart[existingItemIndex].quantity += 1;
+                } else {
+                    product.quantity = 1;
+                    cart.push(product);
+                }
+                
+                localStorage.setItem('cart', JSON.stringify(cart));
+                updateCartCount();
+                
+                // Show confirmation
+                alert(`${product.name} added to cart!`);
+            }
+            
+            function updateCartCount() {
+                const cart = JSON.parse(localStorage.getItem('cart')) || [];
+                const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
+                document.querySelector('.cart-count').textContent = totalItems;
+            }
+            
+            // Initialize cart count
+            updateCartCount();
+            
+            // Initialize event listeners for existing cards
+            attachEventListenersToCards();
+            
+            // Language translation functionality
+            const translations = {
+                en: {
+                    logo_text: "ShopNest",
+                    search_placeholder: "Search for products, services or businesses...",
+                    cart: "Cart",
+                    nav_home: "Home",
+                    nav_products: "Products",
+                    nav_services: "Services",
+                    nav_businesses: "Businesses",
+                    category_services: "Services",
+                    home_services: "Home Services",
+                    personal_services: "Personal Services",
+                    add_to_cart: "Add to Cart",
+                    search_results: "Search Results",
+                    back_to_all: "Back to All Services",
+                    footer_about: "About ShopNest",
+                    footer_about_desc: "ShopNest is your one-stop solution for all local services and products. We connect you with the best local businesses in your area.",
+                    footer_links: "Quick Links",
+                    footer_contact: "Contact Us",
+                    footer_rights: "All rights reserved.",
+                    name_1: "Jewellery Cleaning",
+                    vendor_1: "Shine Services",
+                    distance_1: "Within 3 km",
+                    name_2: "Ring Resizing",
+                    vendor_2: "Gem Fix",
+                    distance_2: "Within 4 km",
+                    name_3: "Custom Design",
+                    vendor_3: "Sparkle Studio",
+                    distance_3: "Within 2 km",
+                    name_4: "Jewellery Repair",
+                    vendor_4: "Elegant Fixes",
+                    distance_4: "Within 5 km",
+                    name_5: "Engraving Service",
+                    vendor_5: "Luxury Crafts",
+                    distance_5: "Within 3 km",
+                    name_6: "Gemstone Setting",
+                    vendor_6: "Gem Masters",
+                    distance_6: "Within 4 km",
+                    name_7: "Polishing Service",
+                    vendor_7: "Shine Services",
+                    distance_7: "Within 3 km",
+                    name_8: "Appraisal Service",
+                    vendor_8: "Gem Evaluators",
+                    distance_8: "Within 2 km",
+                    name_9: "Interior Cleaning",
+                    vendor_9: "Clean Homes",
+                    distance_9: "Within 4 km",
+                    name_10: "Plumbing Service",
+                    vendor_10: "Fix Pipes",
+                    distance_10: "Within 3 km",
+                    name_11: "Electrical Repair",
+                    vendor_11: "Spark Tech",
+                    distance_11: "Within 5 km",
+                    name_12: "Painting Service",
+                    vendor_12: "Color Homes",
+                    distance_12: "Within 4 km",
+                    name_13: "Carpentry Service",
+                    vendor_13: "Wood Works",
+                    distance_13: "Within 3 km",
+                    name_14: "Pest Control",
+                    vendor_14: "Safe Homes",
+                    distance_14: "Within 2 km",
+                    name_15: "AC Servicing",
+                    vendor_15: "Cool Tech",
+                    distance_15: "Within 5 km",
+                    name_16: "Home Deep Cleaning",
+                    vendor_16: "Clean Homes",
+                    distance_16: "Within 4 km",
+                    name_17: "Haircut Service",
+                    vendor_17: "Style Salon",
+                    distance_17: "Within 3 km",
+                    name_18: "Spa Treatment",
+                    vendor_18: "Relax Zone",
+                    distance_18: "Within 4 km",
+                    name_19: "Manicure & Pedicure",
+                    vendor_19: "Beauty Care",
+                    distance_19: "Within 2 km",
+                    name_20: "Facial Treatment",
+                    vendor_20: "Glow Spa",
+                    distance_20: "Within 3 km",
+                    name_21: "Massage Therapy",
+                    vendor_21: "Relax Zone",
+                    distance_21: "Within 4 km",
+                    name_22: "Hair Coloring",
+                    vendor_22: "Style Salon",
+                    distance_22: "Within 3 km",
+                    name_23: "Makeup Service",
+                    vendor_23: "Beauty Care",
+                    distance_23: "Within 2 km",
+                    name_24: "Waxing Service",
+                    vendor_24: "Glow Spa",
+                    distance_24: "Within 3 km"
+                },
+                hi: {
+                    logo_text: "शॉपनेस्ट ",
+                    search_placeholder: "उत्पादों, सेवाओं या व्यवसायों की खोज करें...",
+                    cart: "कार्ट",
+                    nav_home: "होम",
+                    nav_products: "उत्पाद",
+                    nav_services: "सेवाएं",
+                    nav_businesses: "व्यवसाय",
+                    category_services: "सेवाएं",
+                    home_services: "घरेलू सेवाएं",
+                    personal_services: "व्यक्तिगत सेवाएं",
+                    add_to_cart: "कार्ट में जोड़ें",
+                    search_results: "खोज परिणाम",
+                    back_to_all: "सभी सेवाओं पर वापस जाएं",
+                    footer_about: "शॉपनेस्ट  के बारे में",
+                    footer_about_desc: "शॉपनेस्ट  सभी स्थानीय सेवाओं और उत्पादों के लिए आपका एकमात्र समाधान है। हम आपको आपके क्षेत्र के सर्वश्रेष्ठ स्थानीय व्यवसायों से जोड़ते हैं।",
+                    footer_links: "त्वरित लिंक",
+                    footer_contact: "हमसे संपर्क करें",
+                    footer_rights: "सर्वाधिकार सुरक्षित।",
+                    name_1: "आभूषण सफाई",
+                    vendor_1: "शाइन सर्विसेज",
+                    distance_1: "3 किमी के भीतर",
+                    name_2: "अंगूठी का आकार बदलना",
+                    vendor_2: "जेम फिक्स",
+                    distance_2: "4 किमी के भीतर",
+                    name_3: "कस्टम डिजाइन",
+                    vendor_3: "स्पार्कल स्टूडियो",
+                    distance_3: "2 किमी के भीतर",
+                    name_4: "आभूषण मरम्मत",
+                    vendor_4: "एलिगेंट फिक्सेस",
+                    distance_4: "5 किमी के भीतर",
+                    name_5: "उकेरना सेवा",
+                    vendor_5: "लक्जरी क्राफ्ट्स",
+                    distance_5: "3 किमी के भीतर",
+                    name_6: "रत्न सेटिंग",
+                    vendor_6: "जेम मास्टर्स",
+                    distance_6: "4 किमी के भीतर",
+                    name_7: "पॉलिशिंग सेवा",
+                    vendor_7: "शाइन सर्विसेज",
+                    distance_7: "3 किमी के भीतर",
+                    name_8: "मूल्यांकन सेवा",
+                    vendor_8: "जेम इवैल्युएटर्स",
+                    distance_8: "2 किमी के भीतर",
+                    name_9: "अंदरूनी सफाई",
+                    vendor_9: "क्लीन होम्स",
+                    distance_9: "4 किमी के भीतर",
+                    name_10: "प्लंबिंग सेवा",
+                    vendor_10: "फिक्स पाइप्स",
+                    distance_10: "3 किमी के भीतर",
+                    name_11: "विद्युत मरम्मत",
+                    vendor_11: "स्पार्क टेक",
+                    distance_11: "5 किमी के भीतर",
+                    name_12: "पेंटिंग सेवा",
+                    vendor_12: "कलर होम्स",
+                    distance_12: "4 किमी के भीतर",
+                    name_13: "बढ़ई सेवा",
+                    vendor_13: "वुड वर्क्स",
+                    distance_13: "3 किमी के भीतर",
+                    name_14: "कीट नियंत्रण",
+                    vendor_14: "सेफ होम्स",
+                    distance_14: "2 किमी के भीतर",
+                    name_15: "एसी सर्विसिंग",
+                    vendor_15: "कूल टेक",
+                    distance_15: "5 किमी के भीतर",
+                    name_16: "घर की गहन सफाई",
+                    vendor_16: "क्लीन होम्स",
+                    distance_16: "4 किमी के भीतर",
+                    name_17: "बाल कटाई सेवा",
+                    vendor_17: "स्टाइल सैलून",
+                    distance_17: "3 किमी के भीतर",
+                    name_18: "स्पा उपचार",
+                    vendor_18: "रिलैक्स ज़ोन",
+                    distance_18: "4 किमी के भीतर",
+                    name_19: "मैनिक्योर और पेडीक्योर",
+                    vendor_19: "ब्यूटी केयर",
+                    distance_19: "2 किमी के भीतर",
+                    name_20: "फेशियल उपचार",
+                    vendor_20: "ग्लो स्पा",
+                    distance_20: "3 किमी के भीतर",
+                    name_21: "मालिश चिकित्सा",
+                    vendor_21: "रिलैक्स ज़ोन",
+                    distance_21: "4 किमी के भीतर",
+                    name_22: "बाल रंगाई",
+                    vendor_22: "स्टाइल सैलून",
+                    distance_22: "3 किमी के भीतर",
+                    name_23: "मेकअप सेवा",
+                    vendor_23: "ब्यूटी केयर",
+                    distance_23: "2 किमी के भीतर",
+                    name_24: "वैक्सिंग सेवा",
+                    vendor_24: "ग्लो स्पा",
+                    distance_24: "3 किमी के भीतर"
+                },
+                es: {
+                    logo_text: "ShopNest",
+                    search_placeholder: "Buscar productos, servicios o empresas...",
+                    cart: "Carrito",
+                    nav_home: "Inicio",
+                    nav_products: "Productos",
+                    nav_services: "Servicios",
+                    nav_businesses: "Empresas",
+                    category_services: "Servicios",
+                    home_services: "Servicios Domésticos",
+                    personal_services: "Servicios Personales",
+                    add_to_cart: "Añadir al Carrito",
+                    search_results: "Resultados de Búsqueda",
+                    back_to_all: "Volver a Todos los Servicios",
+                    footer_about: "Acerca de ShopNest",
+                    footer_about_desc: "ShopNest es su solución integral para todos los servicios y productos locales. Lo conectamos con las mejores empresas locales de su área.",
+                    footer_links: "Enlaces Rápidos",
+                    footer_contact: "Contáctenos",
+                    footer_rights: "Todos los derechos reservados.",
+                    name_1: "Limpieza de Joyería",
+                    vendor_1: "Shine Services",
+                    distance_1: "Dentro de 3 km",
+                    name_2: "Redimensionamiento de Anillo",
+                    vendor_2: "Gem Fix",
+                    distance_2: "Dentro de 4 km",
+                    name_3: "Diseño Personalizado",
+                    vendor_3: "Sparkle Studio",
+                    distance_3: "Dentro de 2 km",
+                    name_4: "Reparación de Joyería",
+                    vendor_4: "Elegant Fixes",
+                    distance_4: "Dentro de 5 km",
+                    name_5: "Servicio de Grabado",
+                    vendor_5: "Luxury Crafts",
+                    distance_5: "Dentro de 3 km",
+                    name_6: "Engaste de Piedras Preciosas",
+                    vendor_6: "Gem Masters",
+                    distance_6: "Dentro de 4 km",
+                    name_7: "Servicio de Pulido",
+                    vendor_7: "Shine Services",
+                    distance_7: "Dentro de 3 km",
+                    name_8: "Servicio de Tasación",
+                    vendor_8: "Gem Evaluators",
+                    distance_8: "Dentro de 2 km",
+                    name_9: "Limpieza Interior",
+                    vendor_9: "Clean Homes",
+                    distance_9: "Dentro de 4 km",
+                    name_10: "Servicio de Fontanería",
+                    vendor_10: "Fix Pipes",
+                    distance_10: "Dentro de 3 km",
+                    name_11: "Reparación Eléctrica",
+                    vendor_11: "Spark Tech",
+                    distance_11: "Dentro de 5 km",
+                    name_12: "Servicio de Pintura",
+                    vendor_12: "Color Homes",
+                    distance_12: "Dentro de 4 km",
+                    name_13: "Servicio de Carpintería",
+                    vendor_13: "Wood Works",
+                    distance_13: "Dentro de 3 km",
+                    name_14: "Control de Plagas",
+                    vendor_14: "Safe Homes",
+                    distance_14: "Dentro de 2 km",
+                    name_15: "Servicio de AC",
+                    vendor_15: "Cool Tech",
+                    distance_15: "Dentro de 5 km",
+                    name_16: "Limpieza Profunda del Hogar",
+                    vendor_16: "Clean Homes",
+                    distance_16: "Dentro de 4 km",
+                    name_17: "Servicio de Corte de Pelo",
+                    vendor_17: "Style Salon",
+                    distance_17: "Dentro de 3 km",
+                    name_18: "Tratamiento de Spa",
+                    vendor_18: "Relax Zone",
+                    distance_18: "Dentro de 4 km",
+                    name_19: "Manicura y Pedicura",
+                    vendor_19: "Beauty Care",
+                    distance_19: "Dentro de 2 km",
+                    name_20: "Tratamiento Facial",
+                    vendor_20: "Glow Spa",
+                    distance_20: "Dentro de 3 km",
+                    name_21: "Terapia de Masaje",
+                    vendor_21: "Relax Zone",
+                    distance_21: "Dentro de 4 km",
+                    name_22: "Coloración de Cabello",
+                    vendor_22: "Style Salon",
+                    distance_22: "Dentro de 3 km",
+                    name_23: "Servicio de Maquillaje",
+                    vendor_23: "Beauty Care",
+                    distance_23: "Dentro de 2 km",
+                    name_24: "Servicio de Depilación",
+                    vendor_24: "Glow Spa",
+                    distance_24: "Dentro de 3 km"
+                },
+                fr: {
+                    logo_text: "ShopNest",
+                    search_placeholder: "Rechercher des produits, services ou entreprises...",
+                    cart: "Panier",
+                    nav_home: "Accueil",
+                    nav_products: "Produits",
+                    nav_services: "Services",
+                    nav_businesses: "Entreprises",
+                    category_services: "Services",
+                    home_services: "Services Domestiques",
+                    personal_services: "Services Personnels",
+                    add_to_cart: "Ajouter au Panier",
+                    search_results: "Résultats de Recherche",
+                    back_to_all: "Retour à Tous les Services",
+                    footer_about: "À propos de QuickCart",
+                    footer_about_desc: "ShopNest est votre solution unique pour tous les services et produits locaux. Nous vous connectons aux meilleures entreprises locales de votre région.",
+                    footer_links: "Liens Rapides",
+                    footer_contact: "Contactez-nous",
+                    footer_rights: "Tous droits réservés.",
+                    name_1: "Nettoyage de bijoux",
+                    vendor_1: "Shine Services",
+                    distance_1: "À moins de 3 km",
+                    name_2: "Redimensionnement de bague",
+                    vendor_2: "Gem Fix",
+                    distance_2: "À moins de 4 km",
+                    name_3: "Conception personnalisée",
+                    vendor_3: "Sparkle Studio",
+                    distance_3: "À moins de 2 km",
+                    name_4: "Réparation de bijoux",
+                    vendor_4: "Elegant Fixes",
+                    distance_4: "À moins de 5 km",
+                    name_5: "Service de gravure",
+                    vendor_5: "Luxury Crafts",
+                    distance_5: "À moins de 3 km",
+                    name_6: "Sertissage de pierres précieuses",
+                    vendor_6: "Gem Masters",
+                    distance_6: "À moins de 4 km",
+                    name_7: "Service de polissage",
+                    vendor_7: "Shine Services",
+                    distance_7: "À moins de 3 km",
+                    name_8: "Service d'évaluation",
+                    vendor_8: "Gem Evaluators",
+                    distance_8: "À moins de 2 km",
+                    name_9: "Nettoyage intérieur",
+                    vendor_9: "Clean Homes",
+                    distance_9: "À moins de 4 km",
+                    name_10: "Service de plomberie",
+                    vendor_10: "Fix Pipes",
+                    distance_10: "À moins de 3 km",
+                    name_11: "Réparation électrique",
+                    vendor_11: "Spark Tech",
+                    distance_11: "À moins de 5 km",
+                    name_12: "Service de peinture",
+                    vendor_12: "Color Homes",
+                    distance_12: "À moins de 4 km",
+                    name_13: "Service de menuiserie",
+                    vendor_13: "Wood Works",
+                    distance_13: "À moins de 3 km",
+                    name_14: "Contrôle des nuisibles",
+                    vendor_14: "Safe Homes",
+                    distance_14: "À moins de 2 km",
+                    name_15: "Entretien de climatisation",
+                    vendor_15: "Cool Tech",
+                    distance_15: "À moins de 5 km",
+                    name_16: "Nettoyage en profondeur de la maison",
+                    vendor_16: "Clean Homes",
+                    distance_16: "À moins de 4 km",
+                    name_17: "Service de coupe de cheveux",
+                    vendor_17: "Style Salon",
+                    distance_17: "À moins de 3 km",
+                    name_18: "Traitement spa",
+                    vendor_18: "Relax Zone",
+                    distance_18: "À moins de 4 km",
+                    name_19: "Manucure et pédicure",
+                    vendor_19: "Beauty Care",
+                    distance_19: "À moins de 2 km",
+                    name_20: "Traitement facial",
+                    vendor_20: "Glow Spa",
+                    distance_20: "À moins de 3 km",
+                    name_21: "Thérapie de massage",
+                    vendor_21: "Relax Zone",
+                    distance_21: "À moins de 4 km",
+                    name_22: "Coloration capillaire",
+                    vendor_22: "Style Salon",
+                    distance_22: "À moins de 3 km",
+                    name_23: "Service de maquillage",
+                    vendor_23: "Beauty Care",
+                    distance_23: "À moins de 2 km",
+                    name_24: "Service d'épilation",
+                    vendor_24: "Glow Spa",
+                    distance_24: "À moins de 3 km"
+                },
+                te: {
+                    logo_text: "శాప్‌నెస్ట్",
+                    search_placeholder: "ఉత్పత్తులు, సేవలు లేదా వ్యాపారాల కోసం శోధించండి...",
+                    cart: "కార్ట్",
+                    nav_home: "హోమ్",
+                    nav_products: "ఉత్పత్తులు",
+                    nav_services: "సేవలు",
+                    nav_businesses: "వ్యాపారాలు",
+                    category_services: "సేవలు",
+                    home_services: "హోమ్ సేవలు",
+                    personal_services: "వ్యక్తిగత సేవలు",
+                    add_to_cart: "కార్ట్‌లో చేర్చు",
+                    search_results: "శోధన ఫలితాలు",
+                    back_to_all: "అన్ని సేవలకు తిరిగి వెళ్ళు",
+                    footer_about: "శాప్‌నెస్ట్గు రించి",
+                    footer_about_desc: " శాప్‌నెస్ట్ అన్ని స్థానిక సేవలు మరియు ఉత్పత్తులకు మీ వన్-స్టాప్ సొల్యూషన్. మేము మిమ్మల్ని మీ ప్రాంతంలోని ఉత్తమ స్థానిక వ్యాపారాలతో కలుపుతాము.",
+                    footer_links: "త్వరిత లింకులు",
+                    footer_contact: "మమ్మల్ని సంప్రదించండి",
+                    footer_rights: "హక్కులు ప్రత్యేకించబడినవి.",
+                    name_1: "ఆభరణాల శుభ్రపరచడం",
+                    vendor_1: "షైన్ సర్వీసెస్",
+                    distance_1: "3 కి.మీ లోపు",
+                    name_2: "రింగ్ పరిమాణ మార్పు",
+                    vendor_2: "జెమ్ ఫిక్స్",
+                    distance_2: "4 కి.మీ లోపు",
+                    name_3: "కస్టమ్ డిజైన్",
+                    vendor_3: "స్పార్కిల్ స్టూడియో",
+                    distance_3: "2 కి.మీ లోపు",
+                    name_4: "ఆభరణాల రిపేర్",
+                    vendor_4: "ఎలిగెంట్ ఫిక్సెస్",
+                    distance_4: "5 కి.మీ లోపు",
+                    name_5: "ఎంగ్రేవింగ్ సర్వీస్",
+                    vendor_5: "లగ్జరీ క్రాఫ్ట్స్",
+                    distance_5: "3 కి.మీ లోపు",
+                    name_6: "జెమ్‌స్టోన్ సెట్టింగ్",
+                    vendor_6: "జెమ్ మాస్టర్స్",
+                    distance_6: "4 కి.మీ లోపు",
+                    name_7: "పాలిషింగ్ సర్వీస్",
+                    vendor_7: "షైన్ సర్వీసెస్",
+                    distance_7: "3 కి.మీ లోపు",
+                    name_8: "అప్రైజల్ సర్వీస్",
+                    vendor_8: "జెమ్ ఇవాల్యుఏటర్స్",
+                    distance_8: "2 కి.మీ లోపు",
+                    name_9: "ఇంటీరియర్ క్లీనింగ్",
+                    vendor_9: "క్లీన్ హోమ్స్",
+                    distance_9: "4 కి.మీ లోపు",
+                    name_10: "ప్లంబింగ్ సర్వీస్",
+                    vendor_10: "ఫిక్స్ పైప్స్",
+                    distance_10: "3 కి.మీ లోపు",
+                    name_11: "ఎలక్ట్రికల్ రిపేర్",
+                    vendor_11: "స్పార్క్ టెక్",
+                    distance_11: "5 కి.మీ లోపు",
+                    name_12: "పెయింటింగ్ సర్వీస్",
+                    vendor_12: "కలర్ హోమ్స్",
+                    distance_12: "4 కి.మీ లోపు",
+                    name_13: "కార్పెంట్రీ సర్వీస్",
+                    vendor_13: "వుడ్ వర్క్స్",
+                    distance_13: "3 కి.మీ లోపు",
+                    name_14: "పెస్ట్ కంట్రోల్",
+                    vendor_14: "సేఫ్ హోమ్స్",
+                    distance_14: "2 కి.మీ లోపు",
+                    name_15: "ఏసీ సర్వీసింగ్",
+                    vendor_15: "కూల్ టెక్",
+                    distance_15: "5 కి.మీ లోపు",
+                    name_16: "హోమ్ డీప్ క్లీనింగ్",
+                    vendor_16: "క్లీన్ హోమ్స్",
+                    distance_16: "4 కి.మీ లోపు",
+                    name_17: "హెయిర్‌కట్ సర్వీస్",
+                    vendor_17: "స్టైల్ సలూన్",
+                    distance_17: "3 కి.మీ లోపు",
+                    name_18: "స్పా ట్రీట్మెంట్",
+                    vendor_18: "రిలాక్స్ జోన్",
+                    distance_18: "4 కి.మీ లోపు",
+                    name_19: "మానిక్యూర్ & పెడిక్యూర్",
+                    vendor_19: "బ్యూటీ కేర్",
+                    distance_19: "2 కి.మీ లోపు",
+                    name_20: "ఫేషియల్ ట్రీట్మెంట్",
+                    vendor_20: "గ్లో స్పా",
+                    distance_20: "3 కి.మీ లోపు",
+                    name_21: "మసాజ్ థెరపీ",
+                    vendor_21: "రిలాక్స్ జోన్",
+                    distance_21: "4 కి.మీ లోపు",
+                    name_22: "హెయిర్ కలరింగ్",
+                    vendor_22: "స్టైల్ సలూన్",
+                    distance_22: "3 కి.మీ లోపు",
+                    name_23: "మేకప్ సర్వీస్",
+                    vendor_23: "బ్యూటీ కేర్",
+                    distance_23: "2 కి.మీ లోపు",
+                    name_24: "వాక్సింగ్ సర్వీస్",
+                    vendor_24: "గ్లో స్పా",
+                    distance_24: "3 కి.మీ లోపు"
+                }
+            };
+            
+            const languageSelect = document.getElementById('language-select');
+            
+            function changeLanguage(lang) {
+                // Update all translatable elements
+                document.querySelectorAll('[data-translate]').forEach(element => {
+                    const key = element.getAttribute('data-translate');
+                    if (translations[lang] && translations[lang][key]) {
+                        element.textContent = translations[lang][key];
+                    }
+                });
+                
+                // Update placeholders
+                document.querySelectorAll('[data-translate-placeholder]').forEach(element => {
+                    const key = element.getAttribute('data-translate-placeholder');
+                    if (translations[lang] && translations[lang][key]) {
+                        element.placeholder = translations[lang][key];
+                    }
+                });
+                
+                // Update product names and vendors
+                document.querySelectorAll('[data-translate-product]').forEach(element => {
+                    const key = element.getAttribute('data-translate-product');
+                    if (translations[lang] && translations[lang][key]) {
+                        element.textContent = translations[lang][key];
+                    }
+                });
+                
+                // Update URL parameter
+                const url = new URL(window.location);
+                url.searchParams.set('lang', lang);
+                window.history.replaceState({}, '', url);
+            }
+            
+            languageSelect.addEventListener('change', function() {
+                changeLanguage(this.value);
+            });
+            
+            // Initialize language based on URL parameter or browser language
+            const urlParams = new URLSearchParams(window.location.search);
+            const langParam = urlParams.get('lang');
+            if (langParam && translations[langParam]) {
+                languageSelect.value = langParam;
+                changeLanguage(langParam);
+            } else {
+                const browserLang = navigator.language.split('-')[0];
+                if (translations[browserLang]) {
+                    languageSelect.value = browserLang;
+                    changeLanguage(browserLang);
+                }
+            }
+        });
+    </script>
+</body>
+</html>
