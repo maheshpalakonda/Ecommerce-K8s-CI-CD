@@ -2,9 +2,9 @@ pipeline {
     agent any
 
     environment {
-        DOCKERHUB_CRED = credentials('dockerhub-username')
-        DOCKERHUB_CRED_PSW = credentials('dockerhub-password')
-        KUBECONFIG = credentials('kubeconfig-secret-text') // your secret text ID
+        DOCKERHUB_CRED = credentials('dockerhub-username')        // Your DockerHub username credential ID
+        DOCKERHUB_CRED_PSW = credentials('dockerhub-password')    // Your DockerHub password credential ID
+        KUBECONFIG = credentials('eks-kubeconfig')                // Replace with your actual secret text ID
     }
 
     stages {
@@ -32,13 +32,20 @@ pipeline {
         stage('Deploy to EKS') {
             steps {
                 script {
-                    // Write secret text to temp file
+                    // Write secret text to a temp kubeconfig file
                     writeFile file: 'kubeconfig_temp', text: KUBECONFIG
                     sh 'export KUBECONFIG=kubeconfig_temp'
+
+                    // Create namespace if it doesn't exist
                     sh 'kubectl create namespace ecommerce || true'
+
+                    // Apply Kubernetes manifests
                     sh 'kubectl apply -f k8s/mysql.yaml -n ecommerce'
                     sh 'kubectl apply -f k8s/deployment.yaml -n ecommerce'
                     sh 'kubectl apply -f k8s/service.yaml -n ecommerce'
+
+                    // Optional: remove temp kubeconfig
+                    sh 'rm -f kubeconfig_temp'
                 }
             }
         }
@@ -47,6 +54,9 @@ pipeline {
     post {
         failure {
             echo '❌ Deployment failed. Check Jenkins logs for errors.'
+        }
+        success {
+            echo '✅ Deployment succeeded!'
         }
     }
 }
