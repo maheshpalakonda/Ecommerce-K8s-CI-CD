@@ -2,17 +2,13 @@ pipeline {
     agent any
 
     environment {
-        // Kubeconfig Secret Text ID
-        KUBECONFIG = credentials('kubeconfig')
-        // DockerHub credentials ID
-        DOCKERHUB_CRED = credentials('dockerhub-credentials')
-        IMAGE_NAME = "mahesh1925/ecommerce-app:latest"
-        NAMESPACE = "ecommerce"
+        DOCKERHUB_CRED = credentials('dockerhub-username')
+        DOCKERHUB_CRED_PSW = credentials('dockerhub-password')
+        KUBECONFIG = credentials('kubeconfig-secret-text') // your secret text ID
     }
 
     stages {
-
-        stage('Checkout Code') {
+        stage('Checkout SCM') {
             steps {
                 git branch: 'master', url: 'https://github.com/maheshpalakonda/Ecommerce-K8s-CI-CD.git'
             }
@@ -20,34 +16,37 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                sh "docker build -t ${IMAGE_NAME} ."
+                sh 'docker build -t mahesh1925/ecommerce-app:latest .'
             }
         }
 
         stage('Push Docker Image') {
             steps {
-                sh "echo ${DOCKERHUB_CRED_PSW} | docker login -u ${DOCKERHUB_CRED_USR} --password-stdin"
-                sh "docker push ${IMAGE_NAME}"
+                sh '''
+                    echo $DOCKERHUB_CRED_PSW | docker login -u $DOCKERHUB_CRED --password-stdin
+                    docker push mahesh1925/ecommerce-app:latest
+                '''
             }
         }
 
         stage('Deploy to EKS') {
             steps {
-                sh "kubectl create namespace ${NAMESPACE} || true"
-                sh "kubectl apply -f k8s/mysql.yaml -n ${NAMESPACE}"
-                sh "kubectl apply -f k8s/deployment.yaml -n ${NAMESPACE}"
-                sh "kubectl apply -f k8s/cluster-issuer.yaml"
-                sh "kubectl apply -f k8s/ingress.yaml -n ${NAMESPACE}"
+                script {
+                    // Write secret text to temp file
+                    writeFile file: 'kubeconfig_temp', text: KUBECONFIG
+                    sh 'export KUBECONFIG=kubeconfig_temp'
+                    sh 'kubectl create namespace ecommerce || true'
+                    sh 'kubectl apply -f k8s/mysql.yaml -n ecommerce'
+                    sh 'kubectl apply -f k8s/deployment.yaml -n ecommerce'
+                    sh 'kubectl apply -f k8s/service.yaml -n ecommerce'
+                }
             }
         }
     }
 
     post {
-        success {
-            echo "✅ E-commerce app deployed successfully to EKS!"
-        }
         failure {
-            echo "❌ Deployment failed. Check the Jenkins logs for errors."
+            echo '❌ Deployment failed. Check Jenkins logs for errors.'
         }
     }
 }
