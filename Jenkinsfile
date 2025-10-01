@@ -1,45 +1,53 @@
 pipeline {
     agent any
+
     environment {
-        DOCKER_HUB_USER = "mahesh1925"
-        DOCKER_HUB_PASS = credentials('dockerhub-credentials')
-        APP_NAME = "ecommerce-app"
-        APP_VERSION = "v1.0.${BUILD_NUMBER}"
+        // Kubeconfig Secret Text ID
+        KUBECONFIG = credentials('kubeconfig')
+        // DockerHub credentials ID
+        DOCKERHUB_CRED = credentials('dockerhub-credentials')
+        IMAGE_NAME = "mahesh1925/ecommerce-app:latest"
+        NAMESPACE = "ecommerce"
     }
+
     stages {
-        stage('Checkout') {
-            steps { git 'https://github.com/maheshpalakonda/Ecommerce-K8s-CI-CD.git' }
+
+        stage('Checkout Code') {
+            steps {
+                git branch: 'main', url: 'https://github.com/<your-username>/Ecommerce-K8s-CI-CD.git'
+            }
         }
+
         stage('Build Docker Image') {
             steps {
-                sh """
-                  docker build -t $DOCKER_HUB_USER/$APP_NAME:$APP_VERSION .
-                  docker build -t $DOCKER_HUB_USER/$APP_NAME:latest .
-                """
+                sh "docker build -t ${IMAGE_NAME} ."
             }
         }
+
         stage('Push Docker Image') {
             steps {
-                sh """
-                  echo $DOCKER_HUB_PASS | docker login -u $DOCKER_HUB_USER --password-stdin
-                  docker push $DOCKER_HUB_USER/$APP_NAME:$APP_VERSION
-                  docker push $DOCKER_HUB_USER/$APP_NAME:latest
-                """
+                sh "echo ${DOCKERHUB_CRED_PSW} | docker login -u ${DOCKERHUB_CRED_USR} --password-stdin"
+                sh "docker push ${IMAGE_NAME}"
             }
         }
+
         stage('Deploy to EKS') {
             steps {
-                withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG_FILE')]) {
-                    sh """
-                      export KUBECONFIG=$KUBECONFIG_FILE
-                      kubectl create namespace ecommerce || true
-                      kubectl apply -f k8s/mysql.yaml -n ecommerce
-                      kubectl apply -f k8s/deployment.yaml -n ecommerce
-                      kubectl apply -f k8s/cluster-issuer.yaml
-                      kubectl apply -f k8s/ingress.yaml -n ecommerce
-                    """
-                }
+                sh "kubectl create namespace ${NAMESPACE} || true"
+                sh "kubectl apply -f k8s/mysql.yaml -n ${NAMESPACE}"
+                sh "kubectl apply -f k8s/deployment.yaml -n ${NAMESPACE}"
+                sh "kubectl apply -f k8s/cluster-issuer.yaml"
+                sh "kubectl apply -f k8s/ingress.yaml -n ${NAMESPACE}"
             }
+        }
+    }
+
+    post {
+        success {
+            echo "✅ E-commerce app deployed successfully to EKS!"
+        }
+        failure {
+            echo "❌ Deployment failed. Check the Jenkins logs for errors."
         }
     }
 }
