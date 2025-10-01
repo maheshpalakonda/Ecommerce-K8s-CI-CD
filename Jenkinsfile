@@ -14,7 +14,7 @@ pipeline {
 
         stage('Checkout Code') {
             steps {
-                git branch: 'main', url: 'https://github.com/<your-username>/Ecommerce-K8s-CI-CD.git'
+                git branch: 'master', url: 'https://github.com/maheshpalakonda/Ecommerce-K8s-CI-CD.git'
             }
         }
 
