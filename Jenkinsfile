@@ -4,7 +4,7 @@ pipeline {
     environment {
         DOCKERHUB_CRED = credentials('dockerhub-username')        // Your DockerHub username credential ID
         DOCKERHUB_CRED_PSW = credentials('dockerhub-password')    // Your DockerHub password credential ID
-        KUBECONFIG = credentials('eks-kubeconfig')                // Replace with your actual secret text ID
+        KUBECONFIG = credentials('kubeconfig')                // Replace with your actual secret text ID
     }
 
     stages {
